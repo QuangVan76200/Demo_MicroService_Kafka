@@ -16,6 +16,7 @@ spring:
           uri: http://localhost:9001
           predicates:
             - Path=/auth/**
+            
       discovery:
         locator:
           enabled: true
