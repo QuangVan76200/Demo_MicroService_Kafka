@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Build-Jdk-Spec: 17
+Implementation-Title: config-service
+Implementation-Version: 2.6.7
+Created-By: Maven Integration for Eclipse
+

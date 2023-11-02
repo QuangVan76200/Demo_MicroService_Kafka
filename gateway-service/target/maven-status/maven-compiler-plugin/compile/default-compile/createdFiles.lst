@@ -1,0 +1,5 @@
+com\service\configs\GatewayConfig.class
+com\service\configs\RouterValidator.class
+com\service\configs\AuthenticationFilter.class
+com\service\GatewayApplication.class
+com\service\services\JwtUtils.class

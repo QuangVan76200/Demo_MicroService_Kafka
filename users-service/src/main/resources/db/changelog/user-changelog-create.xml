@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+	<changeSet id="create-table-user" author="user" runAlways="true">
+		<preConditions onFail="CONTINUE"
+			onFailMessage="table user already exists">
+			<not>
+				<tableExists tableName="user" />
+			</not>
+		</preConditions>
+		<createTable tableName="user">
+			 <column name="id" type="VARCHAR(100)" defaultValueComputed="uuid()" >
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet id="table-user-add-column-email" author="user" runAlways="true">
+		<preConditions onFail="CONTINUE"
+			onFailMessage="column email already exists in table user">
+			<not>
+				<columnExists tableName="user" columnName="email" />
+			</not>
+		</preConditions>
+		<addColumn tableName="user">
+			<column name="email" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet id="table-user-add-column-username"
+		author="account">
+		<preConditions onFail="CONTINUE"
+			onFailMessage="column username already exists in table user">
+			<not>
+				<columnExists tableName="user" columnName="username" />
+			</not>
+		</preConditions>
+		<addColumn tableName="user">
+			<column name="username" type="VARCHAR(15)">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet id="table-user-add-column-password"
+		author="user">
+		<preConditions onFail="CONTINUE"
+			onFailMessage="column password already exists in table user">
+			<not>
+				<columnExists tableName="user" columnName="password" />
+			</not>
+		</preConditions>
+		<addColumn tableName="user">
+			<column name="password" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet id="table-user-add-column-numberphone" author="user">
+		<preConditions onFail="CONTINUE"
+			onFailMessage="column numberPhone already exists in table user">
+			<not>
+				<columnExists tableName="user" columnName="numberphone" />
+			</not>
+		</preConditions>
+		<addColumn tableName="user">
+			<column name="numberphone" type="VARCHAR(10)">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet id="table-user-add-column-createdDate" author="user">
+		<preConditions onFail="CONTINUE"
+			onFailMessage="column createdDate already exists in table user">
+			<not>
+				<columnExists tableName="user" columnName="createdDate" />
+			</not>
+		</preConditions>
+		<addColumn tableName="user">
+			<column name="createdDate" type="datetime(6)">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet id="table-user-add-column-updatedDate" author="user">
+		<preConditions onFail="CONTINUE"
+			onFailMessage="column updatedDate already exists in table user">
+			<not>
+				<columnExists tableName="user" columnName="updatedDate" />
+			</not>
+		</preConditions>
+		<addColumn tableName="user">
+			<column name="updatedDate" type="datetime(6)">
+				<constraints nullable="true" />
+			</column>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="table-user-add-column-role" author="user">
+		<preConditions onFail="CONTINUE"
+			onFailMessage="column role already exists in table user">
+			<not>
+				<columnExists tableName="user" columnName="role" />
+			</not>
+		</preConditions>
+		<addColumn tableName="user">
+			<column name="role" type="VARCHAR(25)">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+</databaseChangeLog>

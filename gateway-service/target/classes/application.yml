@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: http://localhost:9002
+          predicates:
+            - Path=/users/**
+            
+        - id: authentication-service
+          uri: http://localhost:9001
+          predicates:
+            - Path=/auth/**
+      discovery:
+        locator:
+          enabled: true
+
+#jwt:
+#  secret: MiAVzqUXy5Tfr1kVIGpPMiAVzqUXy5Tfr1kVIGpP
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9090/realms/springboot-microservice-realm

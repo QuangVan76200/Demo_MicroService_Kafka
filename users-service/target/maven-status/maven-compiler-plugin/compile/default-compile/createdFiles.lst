@@ -1,0 +1,10 @@
+com\service\service\UserService.class
+com\service\controller\UserController.class
+com\service\entity\User$UserBuilder.class
+com\service\entity\User.class
+com\service\dto\UserDTO.class
+com\service\event\EventConsumer.class
+com\service\UserApplication.class
+com\service\dao\IUserDao.class
+com\service\event\EventProducer.class
+com\service\dto\UserDTO$UserDTOBuilder.class
