@@ -1,6 +1,7 @@
 E:\TraiiningHTML\Spring Cloud API Gateway\Microservice\authentication-service\src\main\java\com\service\entities\AuthVO.java
 E:\TraiiningHTML\Spring Cloud API Gateway\Microservice\authentication-service\src\main\java\com\service\services\AuthService.java
 E:\TraiiningHTML\Spring Cloud API Gateway\Microservice\authentication-service\src\main\java\com\service\controller\AuthController.java
+E:\TraiiningHTML\Spring Cloud API Gateway\Microservice\authentication-service\src\main\java\com\service\dao\IAuthDao.java
 E:\TraiiningHTML\Spring Cloud API Gateway\Microservice\authentication-service\src\main\java\com\service\AuthenticationService.java
 E:\TraiiningHTML\Spring Cloud API Gateway\Microservice\authentication-service\src\main\java\com\service\event\EventProducer.java
 E:\TraiiningHTML\Spring Cloud API Gateway\Microservice\authentication-service\src\main\java\com\service\validation\ValidateFormat.java

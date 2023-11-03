@@ -20,7 +20,7 @@ public class AuthController {
 
 	private final AuthService authService;
 
-	@PostMapping("/auth/register")
+	@PostMapping("/register")
 	public ResponseEntity<String> register(@RequestBody AuthRegisterRequestDTO request) {
 		System.out.println("Info saved...");
 
