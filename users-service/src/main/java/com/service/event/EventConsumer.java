@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -37,6 +38,7 @@ public class EventConsumer {
 				.receive().subscribe(this::userOnboarding);
 	}
 
+	@Async
 	public void userOnboarding(ReceiverRecord<String, String> receiverRecord) {
 		log.info("User Infor Onboarding event " + receiverRecord.value());
 		AuthDTO user = gson.fromJson(receiverRecord.value(), AuthDTO.class);

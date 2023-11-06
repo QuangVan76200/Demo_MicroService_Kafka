@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -81,6 +82,7 @@ public class AuthService {
 		return AuthDTO.mapEntityToDto(authVO);
 	}
 
+	@Async
 	public AuthDTO updateStatusAccount(AuthDTO authDTO) {
 		Optional<AuthVO> authVOOptional = authDao.findByEmail(authDTO.getEmail());
 

@@ -3,6 +3,7 @@ package com.service.event;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -33,15 +34,16 @@ public class EventConsumer {
 				.receive().subscribe(this::rollbackAccount);
 	}
 
+	@Async
 	public void accountOnboarded(ReceiverRecord<String, String> receiverRecord) {
 		log.info("ACCOUNT_ONBOARDED_TOPIC");
-		System.out.println("HUUUUUUUUUUUUUUUUU");
 		AuthDTO user = gson.fromJson(receiverRecord.value(), AuthDTO.class);
 		authService.updateStatusAccount(user);
 		log.info("----------------ACCOUNT BE CREATED--------------");
 
 	}
 
+	@Async
 	public void rollbackAccount(ReceiverRecord<String, String> receiverRecord) {
 		log.info("PROFILE_CREATION_FAILED_TOPIC");
 		AuthDTO user = gson.fromJson(receiverRecord.value(), AuthDTO.class);

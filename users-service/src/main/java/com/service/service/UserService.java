@@ -32,17 +32,9 @@ public class UserService {
 		log.info("validate input");
 		validate(userDTO);
 
-		// Check if username exists
-		Optional<User> checkUserName = userDao.findByUsername(userDTO.getUsername());
-		if (checkUserName.isPresent()) {
-			throw new CommonException("PD01 Error", "Username Already Exists", HttpStatus.BAD_REQUEST);
-		}
-
-		// Check if number phone exists
-		Optional<User> checkNumberPhone = userDao.findByNumberphone(userDTO.getNumberPhone());
-		if (checkNumberPhone.isPresent()) {
-			throw new CommonException("PD03 Error", "Number Phone Already Exists", HttpStatus.BAD_REQUEST);
-		}
+		checkIfExists(userDao.findByUsername(userDTO.getUsername()), "PD01 Error", "Username Already Exists");
+		
+		checkIfExists(userDao.findByNumberphone(userDTO.getNumberPhone()), "PD03 Error", "Number Phone Already Exists");
 
 		userDTO.setCreatedDate(dateUtils.convertDateToLocalDateTime(new Date()));
 
@@ -64,6 +56,12 @@ public class UserService {
 				|| StringUtils.isEmpty(userVO.getRole())) {
 			throw new CommonException("PD00 Error", "Invalid Input", HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	private void checkIfExists(Optional<?> optional, String errorCode, String errorMessage) {
+	    if (optional.isPresent()) {
+	        throw new CommonException(errorCode, errorMessage, HttpStatus.BAD_REQUEST);
+	    }
 	}
 
 	public UserDTO getUserByUsername(String username) {
