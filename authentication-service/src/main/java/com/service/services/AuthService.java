@@ -18,6 +18,7 @@ import com.service.dto.AuthDTO;
 import com.service.dto.AuthLoginRequestDTO;
 import com.service.dto.AuthRegisterRequestDTO;
 import com.service.dto.AuthResponseDTO;
+import com.service.dto.MailStructure;
 import com.service.entities.AuthVO;
 import com.service.event.EventProducer;
 import com.service.utils.Constant;
@@ -26,7 +27,6 @@ import com.service.validation.ValidateFormat;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import reactor.core.publisher.Mono;
 
 @AllArgsConstructor
 @Service
@@ -38,6 +38,7 @@ public class AuthService {
 	private final ValidateFormat validateFormat;
 	private final EventProducer eventProducer;
 	private final IAuthDao authDao;
+	private final MailService mailService;
 
 	private Gson gson = new Gson();
 
@@ -85,12 +86,15 @@ public class AuthService {
 	@Async
 	public AuthDTO updateStatusAccount(AuthDTO authDTO) {
 		Optional<AuthVO> authVOOptional = authDao.findByEmail(authDTO.getEmail());
-
+		
+		mailService.sendMail("vanlequang00@gmail.com", new MailStructure(Constants.SEND_MAIL_SUBJECT_CLIENT_REGISTER, Constants.CONFIRM_SUCCESSULLY));
+		
 		return authVOOptional.map(authVO -> {
 			authVO.setIsActive(Boolean.TRUE);
 			authDao.save(authVO);
 			return AuthDTO.mapEntityToDto(authVO);
 		}).orElse(null);
+		
 	}
 
 	@Transactional
@@ -167,5 +171,7 @@ public class AuthService {
 
 		return user;
 	}
+	
+	
 
 }
