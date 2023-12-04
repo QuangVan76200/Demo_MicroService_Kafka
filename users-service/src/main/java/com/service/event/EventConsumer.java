@@ -38,7 +38,6 @@ public class EventConsumer {
 				.receive().subscribe(this::userOnboarding);
 	}
 
-	@Async
 	public void userOnboarding(ReceiverRecord<String, String> receiverRecord) {
 		log.info("User Infor Onboarding event " + receiverRecord.value());
 		AuthDTO user = gson.fromJson(receiverRecord.value(), AuthDTO.class);

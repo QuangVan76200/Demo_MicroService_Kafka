@@ -44,6 +44,9 @@ public class CommonConfiguaration {
 		propsReceiver.put(ConsumerConfig.GROUP_ID_CONFIG, reactiveKafkaAppProperties.consumerGroupId);
 		propsReceiver.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		propsReceiver.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+//		propsReceiver.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest"); 
+//		propsReceiver.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 100); 
+//		propsReceiver.put(ConsumerConfig.FETCH_MIN_BYTES_CONFIG, 1);
 		return ReceiverOptions.create(propsReceiver);
 	}
 

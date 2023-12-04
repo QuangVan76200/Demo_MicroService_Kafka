@@ -34,7 +34,6 @@ public class EventConsumer {
 				.receive().subscribe(this::rollbackAccount);
 	}
 
-	@Async
 	public void accountOnboarded(ReceiverRecord<String, String> receiverRecord) {
 		log.info("ACCOUNT_ONBOARDED_TOPIC");
 		AuthDTO user = gson.fromJson(receiverRecord.value(), AuthDTO.class);
@@ -43,7 +42,6 @@ public class EventConsumer {
 
 	}
 
-	@Async
 	public void rollbackAccount(ReceiverRecord<String, String> receiverRecord) {
 		log.info("PROFILE_CREATION_FAILED_TOPIC");
 		AuthDTO user = gson.fromJson(receiverRecord.value(), AuthDTO.class);

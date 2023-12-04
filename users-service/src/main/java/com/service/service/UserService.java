@@ -26,7 +26,6 @@ public class UserService {
 
 	private final DateUtils dateUtils;
 
-	@Async
 	public UserDTO signUp(UserDTO userDTO) {
 
 		log.info("validate input");

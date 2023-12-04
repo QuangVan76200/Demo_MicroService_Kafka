@@ -17,6 +17,10 @@ spring:
           predicates:
             - Path=/auth/**
             
+        - id: email-service
+          uri: http://localhost:9004
+          predicates:
+            - Path=/mail/**
       discovery:
         locator:
           enabled: true
