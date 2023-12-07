@@ -1,6 +1,7 @@
 package com.service.dto;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import com.service.entity.User;
 
@@ -24,6 +25,16 @@ public class UserDTO {
 	private String username;
 
 	private String numberPhone;
+	
+	private String fullName;
+	
+	private String identificationDocuments;
+	
+	private String nationality;
+
+	private String permanentAdress;
+	
+	private Date dateOfBirth;
 
 	private Boolean isActive;
 
@@ -36,11 +47,16 @@ public class UserDTO {
 	public static User mapDtoToEntity(UserDTO userDTO) {
 		return User.builder()
 				.email(userDTO.getEmail())
-				.password(userDTO.getPassword())
 				.username(userDTO.getUsername())
 				.numberphone(userDTO.getNumberPhone())
+				.fullName(userDTO.getFullName())
+				.identificationDocuments(userDTO.getIdentificationDocuments())
+				.nationality(userDTO.getNationality())
+				.permanentAdress(userDTO.getPermanentAdress())
+				.dateOfBirth(userDTO.getDateOfBirth())
 				.createddate(userDTO.getCreatedDate())
 				.updateddate(userDTO.getUpdatedDate())
+				.isActive(userDTO.getIsActive())
 				.role(userDTO.getRole())
 				.build();
 	}
@@ -49,11 +65,16 @@ public class UserDTO {
 		return UserDTO.builder()
 				.id(userVO.getId())
 				.email(userVO.getEmail())
-				.password(userVO.getPassword())
 				.username(userVO.getUsername())
 				.numberPhone(userVO.getNumberphone())
+				.fullName(userVO.getFullName())
+				.identificationDocuments(userVO.getIdentificationDocuments())
+				.nationality(userVO.getNationality())
+				.permanentAdress(userVO.getPermanentAdress())
+				.dateOfBirth(userVO.getDateOfBirth())
 				.createdDate(userVO.getCreateddate())
 				.updatedDate(userVO.getUpdateddate())
+				.isActive(userVO.getIsActive())
 				.role(userVO.getRole())
 				.build();
 	}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Sending Email</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<!-- use the font -->
+	<style>
+		@media screen and (max-width: 768px) {
+			table {
+				min-width: auto;
+				width: 100%;
+			}
+		}
+	</style>
+</head>
+
+<body>
+
+	<table align="center" border="0" cellpadding="0" cellspacing="0">
+		<thead>
+			<tr>
+				<th style="height: 25px; background-color: rgb(2, 149, 192)">&nbsp;</th>
+			</tr>
+			<tr>
+				<th class="gradientBG" style="height: 5px; background-color: rgb(2, 149, 192)">&nbsp;</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td style="padding: 30px 60px; font-size: 14px;">
+					<h1 style="font-size: 24px; color: rgb(2, 149, 192); font-weight: bold;">Xác nhận đăng ký dịch vụ mở
+						tài khoản trực tuyến thành công</h1>
+					<h3 style="font-size: 18px; color: rgb(2, 149, 192); font-weight: bold;">Confirmation of online
+						registration</h3>
+					<p>Dear <b><i><span th:text="${full_name}"></span>,</i></b>
+						You have successfully registered for the products and services online.
+						Details of the account, the registered products, services and user guide are as follows:
+					</p>
+					<p>You have created successfully account to my app! Thanks very much!</span></b></p>
+					<p><b><i>Here is the detail information:</i></b></p>
+					<p></p>
+					<hr style="border: none; height: 4px; background-color: skyblue; color: rgb(2, 149, 192); font-weight: bold;">
+					<p></p>
+					<p><b><i>TransactionDate:</i></b> <span th:text="${transaction_date}"></span></p>
+					<p><b><i>Full Name:</i></b> <span th:text="${full_name}"></span></p>
+					<p><b><i>Date Of Birth:</i></b> <span th:text="${date_of_birth}"></span></p>
+					<p><b><i>Identification Documents:</i></b> <span th:text="${identification_documents}"></span></p>
+					<p><b><i>Nationality:</i></b> <span th:text="${nationality}"></span></p>
+					<p><b><i>PerformanceAdress:</i></b> <span th:text="${performance_adress}"></span></p>
+					
+					
+					<p>Best Regards,</p>
+					<p><b>[THIS IS AN AUTOMATED MESSAGE - PLEASE DO NOT REPLY DIRECTLY TO THIS EMAIL]</b></p>
+				</td>
+		</tbody>
+	</table>
+</body>
+
+</html>

@@ -29,28 +29,30 @@ public class EventConsumer {
 
 	Gson gson = new Gson();
 	private final MailService mailService;
-    private final ReceiverOptions<String, String> receiverOptions;
+	private final ReceiverOptions<String, String> receiverOptions;
 
-    @Autowired
-    public EventConsumer(ReceiverOptions<String, String> receiverOptions, MailService mailService) {
-        this.receiverOptions = receiverOptions;
-        this.mailService = mailService;
-    }
+	@Autowired
+	public EventConsumer(ReceiverOptions<String, String> receiverOptions, MailService mailService) {
+		this.receiverOptions = receiverOptions;
+		this.mailService = mailService;
+	}
 
-    @PostConstruct
-    public void init() {
-        log.info("EventConsumer initialized");
-        startListening();
-    }
+	@PostConstruct
+	public void init() {
+		log.info("EventConsumer initialized");
+		startListening();
+	}
 
-    private void startListening() {
-        log.info("Start listening to Kafka topic");
-        KafkaReceiver
-                .create(receiverOptions.subscription(Collections.singleton(Constant.SEND_MAIL_SUBJECT_CLIENT_REGISTER)))
-                .receive().subscribe(this::sendMailConfirmNewAccountCreated);
-    }
+	private void startListening() {
+		log.info("Start listening to Kafka topic");
+		KafkaReceiver
+				.create(receiverOptions.subscription(
+						Collections.singleton(Constant.SEND_MAIL_SUBJECT_CLIENT_REGISTER)))
+				.receive().subscribe(this::sendMailNotification);
 
-	public void sendMailConfirmNewAccountCreated(ReceiverRecord<String, String> receiverRecord) {
+	}
+
+	public void sendMailNotification(ReceiverRecord<String, String> receiverRecord) {
 		log.info("SEND_MAIL_SUBJECT_CLIENT_REGISTER");
 		System.out.println(receiverRecord.value());
 		AuthDTO authDTO = gson.fromJson(receiverRecord.value(), AuthDTO.class);
@@ -61,11 +63,12 @@ public class EventConsumer {
 		String formattedDateTime = now.format(formatter);
 		NOTIFICATION.append("Quý khách đã đăng ký dịch vụ VCB Digibank thành công vào lúc : ");
 		NOTIFICATION.append(formattedDateTime);
-		MailStructure mailStructure = new MailStructure(Constants.MAIL_SUBJECT_CLIENT_REGISTER,
-				NOTIFICATION.toString());
+		MailStructure mailStructure = new 
+				MailStructure(Constants.MAIL_SUBJECT_CLIENT_REGISTER, NOTIFICATION.toString(),
+				null);
 
-		mailService.sendMail(authDTO.getEmail(), mailStructure);
+		mailService.sendMail(authDTO.getEmail(), mailStructure, authDTO);
 
 	}
-
+	
 }

@@ -10,11 +10,23 @@ import lombok.NoArgsConstructor;
 public class AuthDTO {
 
 	private String email;
+	
 	private String password;
 
-	private String numberPhone;
 	private String userName;
+	
+	private String fullName;
 
+	private String identificationDocuments;
+	
+	private String nationality;
+	
+	private String permanentAdress;
+	
+	private String dateOfBirth;
+	
+	private String numberPhone;
+	
 	private Boolean isActive;
 
 	private String role;

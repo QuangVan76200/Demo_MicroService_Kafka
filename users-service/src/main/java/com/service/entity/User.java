@@ -1,6 +1,7 @@
 package com.service.entity;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,11 +27,26 @@ public class User {
 	@Column(name = "id")
 	private Long id;
 	private String email;
-	private String password;
 	
 	private String username;
 	
 	private String numberphone;
+	
+	private String fullName;
+	
+	private String identificationDocuments;
+	
+	private String nationality;
+
+	private String permanentAdress;
+	
+	private Date dateOfBirth;
+	
+	private Boolean isActive;
+	
+	private String accountNumber;
+	
+	private String pinCode;
 	
 	private LocalDateTime createddate;
 	private LocalDateTime updateddate;

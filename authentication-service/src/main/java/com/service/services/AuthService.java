@@ -24,6 +24,7 @@ import com.service.validation.ValidateFormat;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @AllArgsConstructor
@@ -80,14 +81,17 @@ public class AuthService {
 		return AuthDTO.mapEntityToDto(authVO);
 	}
 
+	@SneakyThrows
 	public AuthDTO updateStatusAccount(AuthDTO authDTO) {
 		Optional<AuthVO> authVOOptional = authDao.findByEmail(authDTO.getEmail());
 		
 		eventProducer.send(Constant.SEND_MAIL_SUBJECT_CLIENT_REGISTER, 
 				gson.toJson(authDTO)).subscribe();
 		
-//		mailService.sendMail("vanlequang00@gmail.com", 
-//			new MailStructure(Constants.SEND_MAIL_SUBJECT_CLIENT_REGISTER, Constants.CONFIRM_SUCCESSULLY));
+//		Thread.sleep(10000);
+		
+//		eventProducer.send(Constant.SEND_MAIL_CONFIRMATION_ONLINE_REGISTRATION, 
+//				gson.toJson(authDTO)).subscribe();
 		
 		return authVOOptional.map(authVO -> {
 			authVO.setIsActive(Boolean.TRUE);
@@ -142,9 +146,9 @@ public class AuthService {
 	}
 
 	private void validateInput(AuthRegisterRequestDTO request) {
-		if (!validateFormat.isValidEmail(request.getEmail())) {
-			throw new CommonException("PD04 Error", "Invalid email format", HttpStatus.BAD_REQUEST);
-		}
+//		if (!validateFormat.isValidEmail(request.getEmail())) {
+//			throw new CommonException("PD04 Error", "Invalid email format", HttpStatus.BAD_REQUEST);
+//		}
 
 		if (!validateFormat.isValidNumberPhone(request.getNumberPhone())) {
 			throw new CommonException("PD04 Error", "Invalid numberphone format", HttpStatus.BAD_REQUEST);
@@ -163,10 +167,17 @@ public class AuthService {
 		AuthDTO user = new AuthDTO();
 		user.setId(dto.getId());
 		user.setEmail(dto.getEmail());
+		user.setUserName(dto.getUserName());
 		user.setNumberPhone(dto.getNumberPhone());
+		user.setFullName(dto.getFullName());
+		user.setIdentificationDocuments(dto.getIdentificationDocuments());
+		user.setNationality(dto.getNationality());
+		user.setPermanentAdress(dto.getPermanentAdress());
+		user.setDateOfBirth(dto.getDateOfBirth());
+		
 		user.setIsActive(Boolean.FALSE);
 		user.setPassword(dto.getPassword());
-		user.setUserName(dto.getUserName());
+		
 		user.setRole(dto.getRole());
 
 		return user;

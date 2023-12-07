@@ -25,8 +25,9 @@ public class MailController {
 	
 	@PostMapping("/send/{mail}")
 	public String sendMail(@PathVariable String mail, @RequestBody MailStructure mailStructure) {
-		mailService.sendMail(mail, mailStructure);
+//		mailService.sendMail(mail, mailStructure);
 		
 		return "Send Email to "+ mail+ " SUCESSFFULL";
 	}
+	
 }

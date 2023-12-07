@@ -1,10 +1,10 @@
 package com.service.service;
 
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -25,6 +25,8 @@ public class UserService {
 	private final IUserDao userDao;
 
 	private final DateUtils dateUtils;
+	
+	static SecureRandom random = new SecureRandom();
 
 	public UserDTO signUp(UserDTO userDTO) {
 
@@ -32,14 +34,15 @@ public class UserService {
 		validate(userDTO);
 
 		checkIfExists(userDao.findByUsername(userDTO.getUsername()), "PD01 Error", "Username Already Exists");
-		
 		checkIfExists(userDao.findByNumberphone(userDTO.getNumberPhone()), "PD03 Error", "Number Phone Already Exists");
-
 		userDTO.setCreatedDate(dateUtils.convertDateToLocalDateTime(new Date()));
-
+		
 		userDTO.setIsActive(Boolean.TRUE);
-
 		User user = UserDTO.mapDtoToEntity(userDTO);
+		
+		user.setAccountNumber("9"+userDTO.getNumberPhone());
+		
+		user.setPinCode(randomPinCode());
 
 		userDao.save(user);
 
@@ -47,6 +50,22 @@ public class UserService {
 
 		return userDto;
 
+	}
+	
+	public static String randomPinCode() {
+		String[] randomPinCode = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
+		int pinLength = 6;
+		
+		String[] generatedPinCode = new String[pinLength];
+		for(int i = 0 ; i< pinLength; i++) {
+			int index = random.nextInt(randomPinCode.length);
+			generatedPinCode[i] = randomPinCode[index];
+		}
+		
+		String pinCode = String.join("", generatedPinCode);
+		
+		return pinCode;
+		
 	}
 
 	private void validate(UserDTO userVO) {

@@ -1,10 +1,11 @@
 package com.service.event;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -28,13 +29,16 @@ public class EventConsumer {
 	        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
 	        .create();
 	
+	SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private EventProducer eventProducer;
 
 	public EventConsumer(ReceiverOptions<String, String> receiverOptions) {
-		KafkaReceiver.create(receiverOptions.subscription(Collections.singleton(Constant.ACCOUNT_ONBOARDING_TOPIC)))
+		KafkaReceiver.create(receiverOptions.subscription(
+				Collections.singleton(Constant.ACCOUNT_ONBOARDING_TOPIC)))
 				.receive().subscribe(this::userOnboarding);
 	}
 
@@ -43,8 +47,21 @@ public class EventConsumer {
 		AuthDTO user = gson.fromJson(receiverRecord.value(), AuthDTO.class);
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUsername(user.getUserName());
-		userDTO.setEmail(user.getEmail());
 		userDTO.setNumberPhone(user.getNumberPhone());
+		userDTO.setFullName(user.getFullName());
+		userDTO.setIdentificationDocuments(user.getIdentificationDocuments());
+		userDTO.setNationality(user.getNationality());
+		userDTO.setPermanentAdress(user.getPermanentAdress());
+		try {
+			Date date = dateFormat.parse(user.getDateOfBirth());
+			userDTO.setDateOfBirth(date);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		
+		userDTO.setEmail(user.getEmail());
 		userDTO.setPassword(user.getPassword());
 		userDTO.setRole(user.getRole());
 

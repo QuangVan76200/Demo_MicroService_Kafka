@@ -16,8 +16,19 @@ public class AuthDTO {
 	private String id;
 	private String email;
 	private String password;
+	
+	private String fullName;
+
+	private String identificationDocuments;
+	
+	private String nationality;
+	
+	private String permanentAdress;
+	
+	private String dateOfBirth;
 
 	private String numberPhone;
+	
 	private String userName;
 
 	private Boolean isActive;
