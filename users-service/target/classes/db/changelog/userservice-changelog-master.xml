@@ -7,6 +7,6 @@
 
 
 	<include file="db/changelog/user-changelog-create.xml" />
-	<!--<include file="db/changelog/profile-changelog-init.xml" /> 
-	<include file="db/changelog/profile-changelog-indexes.xml" />-->
+	<!--<include file="db/changelog/profile-changelog-init.xml" /> <include 
+		file="db/changelog/profile-changelog-indexes.xml" /> -->
 </databaseChangeLog>

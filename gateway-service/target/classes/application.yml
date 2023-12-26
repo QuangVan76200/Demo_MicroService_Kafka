@@ -24,12 +24,12 @@ spring:
       discovery:
         locator:
           enabled: true
-
-#jwt:
-#  secret: MiAVzqUXy5Tfr1kVIGpPMiAVzqUXy5Tfr1kVIGpP
-
+          
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:9090/realms/springboot-microservice-realm
+          
+jwt:
+  secret: MiAVzqUXy5Tfr1kVIGpPMiAVzqUXy5Tfr1kVIGpP

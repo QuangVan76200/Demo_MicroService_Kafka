@@ -13,4 +13,6 @@ public class Constants {
 	public static final String CONFIRM_SUCCESSULLY = "YOUR ACCOUNT HAS BEEN SUCCESSFULLY CREATED";
 	
 	public static final String CONFIRM_ONLINE_SUCCESSFLLY = "SUCCESSFUL ONLINE ACCOUNT OPENING SERVICE REGISTRATION";
+	
+	public static final String FORGOT_MAIL_REQUEST = "Confirm Renew Password";
 }

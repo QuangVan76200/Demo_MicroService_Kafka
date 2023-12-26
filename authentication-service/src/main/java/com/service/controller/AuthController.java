@@ -1,14 +1,17 @@
 package com.service.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.service.dto.AuthLoginRequestDTO;
-import com.service.dto.AuthRegisterRequestDTO;
-import com.service.dto.AuthResponseDTO;
+import com.service.dto.request.AuthLoginRequestDTO;
+import com.service.dto.request.AuthRegisterRequestDTO;
+import com.service.dto.request.RenewPasswordRequest;
+import com.service.dto.response.AuthResponseDTO;
+import com.service.response.BaseResponse;
 import com.service.services.AuthService;
 
 import lombok.AllArgsConstructor;
@@ -19,7 +22,6 @@ import lombok.AllArgsConstructor;
 public class AuthController {
 
 	private final AuthService authService;
-	
 
 	@PostMapping("/register")
 	public ResponseEntity<String> register(@RequestBody AuthRegisterRequestDTO request) {
@@ -32,8 +34,17 @@ public class AuthController {
 	public AuthResponseDTO login(@RequestBody AuthLoginRequestDTO dto) {
 
 		return authService.login(dto);
-		
+
+	}
+
+	@PostMapping("/password/forgot/{email}")
+	public ResponseEntity<BaseResponse<String>> forgotPasswordRequest(@PathVariable String email) {
+		return authService.forgotPasswordRequest(email);
 	}
 	
+	@PostMapping("/password/renew")
+    public ResponseEntity<BaseResponse<String>> renewPassword(@RequestBody RenewPasswordRequest request) {
+        return authService.renewPassword(request);
+    }
 
 }

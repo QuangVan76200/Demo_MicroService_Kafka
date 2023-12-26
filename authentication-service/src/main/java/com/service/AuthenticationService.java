@@ -15,14 +15,14 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthenticationService {
 
 	public static void main(String[] args) {
-		  SpringApplication.run(AuthenticationService.class);
+		SpringApplication.run(AuthenticationService.class);
 	}
 
 	@Bean
 	@LoadBalanced
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
-	}			
+	}
 
 	@Bean
 	PasswordEncoder passwordEncoder() {

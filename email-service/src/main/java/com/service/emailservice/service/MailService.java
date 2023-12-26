@@ -48,10 +48,6 @@ public class MailService {
 
 	public void sendMailMessage(String mail, MailStructure mailStructure) {
 
-//		if (!format.isValidEmail(mail)) {
-//			throw new CommonException("PD05", "Email Incorrect Format", HttpStatus.BAD_REQUEST);
-//		}
-
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setFrom(fromMail);
 
@@ -62,8 +58,31 @@ public class MailService {
 		mailSender.send(mailMessage);
 
 	}
+	
+	public void sendMailCodeForgotPassword(String mail, MailStructure mailStructure) {
 
-	public void sendMail(String mail, MailStructure mailStructure, AuthDTO authDTO) {
+		try {
+			MimeMessage mailMessage = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(mailMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+					StandardCharsets.UTF_8.name());
+			Map<String, Object> variables = new HashMap<>();
+			variables.put("code", mailStructure.getMessage());
+			
+			helper.setText(mailStructure.getMessage());
+			String htmlContent = thymleafService
+					.createContext("forgot-password-template.html", variables);
+	        helper.setText(htmlContent, true);
+			helper.setFrom(fromMail);
+			helper.setSubject(mailStructure.getSubject());
+			helper.setTo(mail);
+			mailSender.send(mailMessage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void sendMailAnnouncement(String mail, MailStructure mailStructure, AuthDTO authDTO) {
 
 		try {
 			MimeMessage message = mailSender.createMimeMessage();

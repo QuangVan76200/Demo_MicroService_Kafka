@@ -1,15 +1,2 @@
-com\service\AuthenticationService.class
-com\service\dto\AuthDTO.class
-com\service\dao\IAuthDao.class
-com\service\dto\AuthRegisterRequestDTO.class
-com\service\entities\AuthVO$AuthVOBuilder.class
-com\service\controller\AuthController.class
-com\service\dto\AuthDTO$AuthDTOBuilder.class
-com\service\event\EventProducer.class
-com\service\dto\AuthLoginRequestDTO.class
 com\service\enums\Roles.class
-com\service\entities\AuthVO.class
-com\service\dto\AuthResponseDTO.class
-com\service\validation\ValidateFormat.class
-com\service\services\AuthService.class
-com\service\services\JwtUtil.class
+com\service\controller\AuthController.class

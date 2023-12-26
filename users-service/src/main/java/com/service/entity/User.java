@@ -3,8 +3,11 @@ package com.service.entity;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import com.service.listener.UserListener;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,6 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "User")
 @Builder
+//@EntityListeners(UserListener.class)
 public class User {
 
 	@Id
@@ -38,10 +42,12 @@ public class User {
 	
 	private String nationality;
 
+//	@Column(name="permanent_adress")
 	private String permanentAdress;
 	
 	private Date dateOfBirth;
 	
+	@Column(name="is_active")
 	private Boolean isActive;
 	
 	private String accountNumber;

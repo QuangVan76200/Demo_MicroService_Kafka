@@ -3,7 +3,8 @@
 	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
-	<changeSet id="create-table-user" author="user" runAlways="true">
+	<changeSet id="create-table-user" author="user"
+		runAlways="true">
 		<preConditions onFail="CONTINUE"
 			onFailMessage="table user already exists">
 			<not>
@@ -11,12 +12,14 @@
 			</not>
 		</preConditions>
 		<createTable tableName="user">
-			 <column name="id" type="VARCHAR(100)" defaultValueComputed="uuid()" >
+			<column name="id" type="VARCHAR(100)"
+				defaultValueComputed="uuid()">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
 		</createTable>
 	</changeSet>
-	<changeSet id="table-user-add-column-email" author="user" runAlways="true">
+	<changeSet id="table-user-add-column-email" author="user"
+		runAlways="true">
 		<preConditions onFail="CONTINUE"
 			onFailMessage="column email already exists in table user">
 			<not>
@@ -43,8 +46,7 @@
 			</column>
 		</addColumn>
 	</changeSet>
-	<changeSet id="table-user-add-column-password"
-		author="user">
+	<changeSet id="table-user-add-column-password" author="user">
 		<preConditions onFail="CONTINUE"
 			onFailMessage="column password already exists in table user">
 			<not>
@@ -57,7 +59,8 @@
 			</column>
 		</addColumn>
 	</changeSet>
-	<changeSet id="table-user-add-column-numberphone" author="user">
+	<changeSet id="table-user-add-column-numberphone"
+		author="user">
 		<preConditions onFail="CONTINUE"
 			onFailMessage="column numberPhone already exists in table user">
 			<not>
@@ -70,7 +73,8 @@
 			</column>
 		</addColumn>
 	</changeSet>
-	<changeSet id="table-user-add-column-createdDate" author="user">
+	<changeSet id="table-user-add-column-createdDate"
+		author="user">
 		<preConditions onFail="CONTINUE"
 			onFailMessage="column createdDate already exists in table user">
 			<not>
@@ -83,7 +87,8 @@
 			</column>
 		</addColumn>
 	</changeSet>
-	<changeSet id="table-user-add-column-updatedDate" author="user">
+	<changeSet id="table-user-add-column-updatedDate"
+		author="user">
 		<preConditions onFail="CONTINUE"
 			onFailMessage="column updatedDate already exists in table user">
 			<not>

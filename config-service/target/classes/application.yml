@@ -10,3 +10,5 @@ spring:
         git:
           uri: https://github.com/igorkosandyak/demo-config-server.git
           clone-on-start: true
+          
+          

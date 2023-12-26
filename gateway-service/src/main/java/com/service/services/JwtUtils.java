@@ -10,39 +10,39 @@ import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.Keys;;
 
-//@Service
+@Service
 public class JwtUtils {
-//    @Value("${jwt.secret}")
-//    private String secret;
-//
-//    private Key key;
-//
-//    @PostConstruct
-//    public void initKey() {
-//        this.key = Keys.hmacShaKeyFor(secret.getBytes());
-//    }
-//
-//    public Claims getClaims(String token) {
-//        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
-//    }
-//
-//    public boolean isExpired(String token) {
-//        try {
-//            return getClaims(token).getExpiration().before(new Date());
-//        } catch (Exception e) {
-//            return false;
-//        }
-//    }
-//    
-//    public boolean isValidToken(String token) {
-//    	 try {
-//             Claims claims = getClaims(token);
-//             Date expiration = claims.getExpiration();
-//             return expiration != null && !expiration.before(new Date());
-//         } catch (Exception e) {
-//             return false;
-//         }
-//    }
+    @Value("${jwt.secret}")
+    private String secret;
+
+    private Key key;
+
+    @PostConstruct
+    public void initKey() {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+    }
+
+    public Claims getClaims(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+    }
+
+    public boolean isExpired(String token) {
+        try {
+            return getClaims(token).getExpiration().before(new Date());
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
+    public boolean isValidToken(String token) {
+    	 try {
+             Claims claims = getClaims(token);
+             Date expiration = claims.getExpiration();
+             return expiration != null && !expiration.before(new Date());
+         } catch (Exception e) {
+             return false;
+         }
+    }
 }

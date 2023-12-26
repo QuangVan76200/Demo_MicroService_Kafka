@@ -2,32 +2,40 @@ package com.service.services;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.service.common.CommonException;
+import com.service.common.ResourceNotFoundException;
 import com.service.constant.Constants;
 import com.service.dao.IAuthDao;
 import com.service.dto.AuthDTO;
-import com.service.dto.AuthLoginRequestDTO;
-import com.service.dto.AuthRegisterRequestDTO;
-import com.service.dto.AuthResponseDTO;
+import com.service.dto.request.AuthLoginRequestDTO;
+import com.service.dto.request.AuthRegisterRequestDTO;
+import com.service.dto.request.RenewPasswordRequest;
+import com.service.dto.response.AuthResponseDTO;
 import com.service.entities.AuthVO;
 import com.service.event.EventProducer;
+import com.service.model.ForgotPasswordDTO;
+import com.service.response.BaseResponse;
+import com.service.response.ResponseFactory;
 import com.service.utils.Constant;
 import com.service.validation.ValidateFormat;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 @Slf4j
 public class AuthService {
@@ -37,6 +45,8 @@ public class AuthService {
 	private final ValidateFormat validateFormat;
 	private final EventProducer eventProducer;
 	private final IAuthDao authDao;
+//	private final RedisTemplate<String, Object> redisTemplateString;
+	private final ResponseFactory responseFactory;
 
 	private Gson gson = new Gson();
 
@@ -55,6 +65,9 @@ public class AuthService {
 			AuthDTO user = requestToObject(request);
 
 			authAccount(user);
+			
+			String key = "user:" + user.getEmail(); 
+//			redisTemplateString.opsForValue().set(key, user);
 
 			eventProducer.send(Constant.ACCOUNT_ONBOARDING_TOPIC, gson.toJson(user)).subscribe();
 
@@ -84,21 +97,15 @@ public class AuthService {
 	@SneakyThrows
 	public AuthDTO updateStatusAccount(AuthDTO authDTO) {
 		Optional<AuthVO> authVOOptional = authDao.findByEmail(authDTO.getEmail());
-		
-		eventProducer.send(Constant.SEND_MAIL_SUBJECT_CLIENT_REGISTER, 
-				gson.toJson(authDTO)).subscribe();
-		
-//		Thread.sleep(10000);
-		
-//		eventProducer.send(Constant.SEND_MAIL_CONFIRMATION_ONLINE_REGISTRATION, 
-//				gson.toJson(authDTO)).subscribe();
-		
+
+		eventProducer.send(Constant.SEND_MAIL_SUBJECT_CLIENT_REGISTER, gson.toJson(authDTO)).subscribe();
+
 		return authVOOptional.map(authVO -> {
 			authVO.setIsActive(Boolean.TRUE);
 			authDao.save(authVO);
 			return AuthDTO.mapEntityToDto(authVO);
 		}).orElse(null);
-		
+
 	}
 
 	@Transactional
@@ -174,15 +181,41 @@ public class AuthService {
 		user.setNationality(dto.getNationality());
 		user.setPermanentAdress(dto.getPermanentAdress());
 		user.setDateOfBirth(dto.getDateOfBirth());
-		
+
 		user.setIsActive(Boolean.FALSE);
 		user.setPassword(dto.getPassword());
-		
+
 		user.setRole(dto.getRole());
 
 		return user;
 	}
-	
-	
+
+	public ResponseEntity<BaseResponse<String>> forgotPasswordRequest(String email) {
+		authDao.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
+
+		String activeCode = String.valueOf(new Random().nextInt(900000) + 100000);
+
+		ForgotPasswordDTO forgotPassword = new ForgotPasswordDTO(activeCode , email);
+
+		eventProducer.send(Constant.PASSWORD_FORGOT, gson.toJson(forgotPassword)).subscribe();
+		log.info("Mã xác nhận đã được gửi tới email " + email);
+
+		return responseFactory.success("Mã xác nhận đã được gửi tới email ", email);
+	}
+
+	public ResponseEntity<BaseResponse<String>> renewPassword(RenewPasswordRequest request) {
+		if(!request.getNewPassword().equals(request.getRetypePassword())) {
+			throw new CommonException("PD098", "passwords do not match", HttpStatus.BAD_REQUEST);
+		}
+		Optional<AuthVO> userOptional = authDao.findByEmail(request.getEmail());
+		if(userOptional.isPresent()) {
+			AuthVO user = userOptional.get();
+			String encodedPassword = new BCryptPasswordEncoder().encode(request.getNewPassword());
+			user.setPassword(encodedPassword);
+			authDao.save(user);
+			return responseFactory.success("Password setup successful, please log in again", request.getNewPassword());
+		}
+		throw new CommonException("PD023", "Mã xác thực không chính xác hoặc đã hết hạn", HttpStatus.UNAUTHORIZED);
+	}
 
 }
