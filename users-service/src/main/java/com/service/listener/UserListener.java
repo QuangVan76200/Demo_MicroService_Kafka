@@ -12,6 +12,7 @@ import com.service.service.IUserRedisService;
 import jakarta.persistence.PostPersist;
 import jakarta.persistence.PostUpdate;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -35,7 +36,7 @@ public class UserListener {
 		
 	}
 	
-	@PrePersist
+	@PreUpdate
 	public void preUpdate(User  user) {
 		logger.info("prePersit");
 		
@@ -47,7 +48,5 @@ public class UserListener {
 		logger.info("postPersit");
 		userRedisService.clear();
 	}
-	
-	
 	
 }

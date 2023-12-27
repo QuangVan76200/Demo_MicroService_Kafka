@@ -33,7 +33,7 @@ public class UserRedisServiceImpl implements IUserRedisService {
 		String sortDirection = sort.getOrderFor("id")
 				.getDirection() == Sort.Direction.ASC? "asc":"desc";
 		
-		String key = String.format("all_users:%d:%d:%s", pageNumber, pageSize, sortDirection);
+		String key = String.format("all_users:%s:%d:%d:%s",keyword, pageNumber, pageSize, sortDirection);
 		
 		return key;
 	}

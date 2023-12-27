@@ -45,8 +45,10 @@ public class UserService {
 		log.info("validate input");
 		validate(userDTO);
 
-		checkIfExists(userDao.findByUsername(userDTO.getUsername()), "PD01 Error", "Username Already Exists");
-		checkIfExists(userDao.findByNumberphone(userDTO.getNumberPhone()), "PD03 Error", "Number Phone Already Exists");
+		checkIfExists(userDao.findByUsername(userDTO.getUsername()),
+				"PD01 Error", "Username Already Exists");
+		checkIfExists(userDao.findByNumberphone(userDTO.getNumberPhone()),
+				"PD03 Error", "Number Phone Already Exists");
 		userDTO.setCreatedDate(dateUtils.convertDateToLocalDateTime(new Date()));
 
 		userDTO.setIsActive(Boolean.TRUE);
@@ -81,8 +83,10 @@ public class UserService {
 	}
 
 	private void validate(UserDTO userVO) {
-		if (userVO == null || StringUtils.isEmpty(userVO.getUsername()) || StringUtils.isEmpty(userVO.getEmail())
-				|| StringUtils.isEmpty(userVO.getNumberPhone()) || StringUtils.isEmpty(userVO.getPassword())
+		if (userVO == null || StringUtils.isEmpty(userVO.getUsername()) 
+				|| StringUtils.isEmpty(userVO.getEmail())
+				|| StringUtils.isEmpty(userVO.getNumberPhone()) 
+				|| StringUtils.isEmpty(userVO.getPassword())
 				|| StringUtils.isEmpty(userVO.getRole())) {
 			throw new CommonException("PD00 Error", "Invalid Input", HttpStatus.BAD_REQUEST);
 		}

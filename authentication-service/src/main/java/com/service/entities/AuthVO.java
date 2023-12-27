@@ -26,6 +26,7 @@ public class AuthVO {
 	private String userName;
 
 	private Boolean isActive;
+	private String pinCode;
 
 	private String role;
 

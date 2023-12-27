@@ -1,5 +1,6 @@
 package com.service.services;
 
+import java.security.SecureRandom;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
@@ -29,6 +30,7 @@ import com.service.response.ResponseFactory;
 import com.service.utils.Constant;
 import com.service.validation.ValidateFormat;
 
+import io.micrometer.core.ipc.http.HttpSender.Response;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +47,7 @@ public class AuthService {
 	private final ValidateFormat validateFormat;
 	private final EventProducer eventProducer;
 	private final IAuthDao authDao;
-//	private final RedisTemplate<String, Object> redisTemplateString;
+	static SecureRandom random = new SecureRandom();
 	private final ResponseFactory responseFactory;
 
 	private Gson gson = new Gson();
@@ -98,7 +100,8 @@ public class AuthService {
 	public AuthDTO updateStatusAccount(AuthDTO authDTO) {
 		Optional<AuthVO> authVOOptional = authDao.findByEmail(authDTO.getEmail());
 
-		eventProducer.send(Constant.SEND_MAIL_SUBJECT_CLIENT_REGISTER, gson.toJson(authDTO)).subscribe();
+		eventProducer.send(Constant.SEND_MAIL_SUBJECT_CLIENT_REGISTER, gson.toJson(authDTO))
+			.subscribe();
 
 		return authVOOptional.map(authVO -> {
 			authVO.setIsActive(Boolean.TRUE);
@@ -189,18 +192,30 @@ public class AuthService {
 
 		return user;
 	}
-
+	
 	public ResponseEntity<BaseResponse<String>> forgotPasswordRequest(String email) {
-		authDao.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
+		AuthVO authUser = authDao.findByEmail(email).orElseThrow(() 
+				-> new ResourceNotFoundException("User", "email", email));
 
 		String activeCode = String.valueOf(new Random().nextInt(900000) + 100000);
-
 		ForgotPasswordDTO forgotPassword = new ForgotPasswordDTO(activeCode , email);
-
+		authUser.setPinCode(activeCode);
+		authDao.save(authUser);
 		eventProducer.send(Constant.PASSWORD_FORGOT, gson.toJson(forgotPassword)).subscribe();
 		log.info("Mã xác nhận đã được gửi tới email " + email);
-
+		
 		return responseFactory.success("Mã xác nhận đã được gửi tới email ", email);
+	}
+	
+	public ResponseEntity<BaseResponse<Boolean>> checkPinCode(String email, String pinCode) {
+		if(pinCode.isEmpty()) {
+			return responseFactory.fail(HttpStatus.BAD_REQUEST, "Pin Code is not be Empty", Boolean.FALSE);
+		}
+		String value  = authDao.findByPinCode(email);
+		if(!value.equals(pinCode)) {
+			return responseFactory.fail(HttpStatus.BAD_REQUEST, "Pin Code Incorrect", Boolean.FALSE);
+		}
+		return responseFactory.success("Pin Code IsCorrect", Boolean.TRUE);
 	}
 
 	public ResponseEntity<BaseResponse<String>> renewPassword(RenewPasswordRequest request) {
@@ -217,5 +232,5 @@ public class AuthService {
 		}
 		throw new CommonException("PD023", "Mã xác thực không chính xác hoặc đã hết hạn", HttpStatus.UNAUTHORIZED);
 	}
-
+	
 }

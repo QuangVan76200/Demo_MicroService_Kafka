@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "User")
 @Builder
-//@EntityListeners(UserListener.class)
+@EntityListeners(UserListener.class)
 public class User {
 
 	@Id
