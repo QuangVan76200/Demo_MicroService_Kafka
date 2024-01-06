@@ -1,4 +1,4 @@
-package com.service.config;
+package com.service.emailservice.config;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
